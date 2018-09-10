@@ -36,6 +36,8 @@ public class MainView extends View {
     public int sYIcons;
     public int sXNewGame;
     public int sXUndo;
+    public int sXHome;
+    public int sXMusic;
     public int iconSize;
     //Misc
     boolean refreshLastTime = true;
@@ -160,6 +162,7 @@ public class MainView extends View {
 
     private void drawScoreText(Canvas canvas) {
         //Drawing the score text: Ver 2
+
         paint.setTextSize(bodyTextSize);
         paint.setTextAlign(Paint.Align.CENTER);
 
@@ -242,6 +245,42 @@ public class MainView extends View {
                 sXUndo + iconPaddingSize,
                 sYIcons + iconPaddingSize,
                 sXUndo + iconSize - iconPaddingSize,
+                sYIcons + iconSize - iconPaddingSize
+        );
+    }
+
+    private void drawHomeButton(Canvas canvas) {
+
+        drawDrawable(canvas,
+                backgroundRectangle,
+                sXHome,
+                sYIcons, sXHome + iconSize,
+                sYIcons + iconSize
+        );
+
+        drawDrawable(canvas,
+                getDrawable(R.drawable.ic_action_undo),
+                sXHome + iconPaddingSize,
+                sYIcons + iconPaddingSize,
+                sXHome + iconSize - iconPaddingSize,
+                sYIcons + iconSize - iconPaddingSize
+        );
+    }
+
+    private void drawMusicButton(Canvas canvas) {
+
+        drawDrawable(canvas,
+                backgroundRectangle,
+                sXMusic,
+                sYIcons, sXMusic + iconSize,
+                sYIcons + iconSize
+        );
+
+        drawDrawable(canvas,
+                getDrawable(R.drawable.ic_action_undo),
+                sXMusic + iconPaddingSize,
+                sYIcons + iconPaddingSize,
+                sXMusic + iconSize - iconPaddingSize,
                 sYIcons + iconSize - iconPaddingSize
         );
     }
@@ -390,7 +429,7 @@ public class MainView extends View {
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(bodyTextSize);
         paint.setColor(getResources().getColor(R.color.text_black));
-        canvas.drawText(getResources().getString(R.string.endless), startingX, sYIcons - centerText() * 2, paint);
+      //  canvas.drawText(getResources().getString(R.string.endless), startingX, sYIcons - centerText() * 2, paint);
     }
 
     private void createEndGameStates(Canvas canvas, boolean win, boolean showButton) {
@@ -430,6 +469,8 @@ public class MainView extends View {
         drawHeader(canvas);
         drawNewGameButton(canvas, false);
         drawUndoButton(canvas);
+        drawHomeButton(canvas);
+        drawMusicButton(canvas);
         drawBackground(canvas);
         drawBackgroundGrid(canvas);
         drawInstructions(canvas);
@@ -500,12 +541,20 @@ public class MainView extends View {
         lastFPSTime = System.nanoTime();
     }
 
+    public static float dpFromPx(final Context context, final float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
+
     private void getLayout(int width, int height) {
         cellSize = Math.min(width / (game.numSquaresX + 1), height / (game.numSquaresY + 3));
         gridWidth = cellSize / 7;
         int screenMiddleX = width / 2;
         int screenMiddleY = height / 2;
-        int boardMiddleY = screenMiddleY + cellSize / 2;
+        int boardMiddleY = screenMiddleY + cellSize / 4;
         iconSize = cellSize / 2;
 
         //Grid Dimensions
@@ -536,19 +585,27 @@ public class MainView extends View {
             1000f * ((widthWithPadding - gridWidth * 2) / (paint.measureText(getResources().getString(R.string.you_win))))
         );
 
-        paint.setTextSize(cellSize);
         cellTextSize = textSize;
-        titleTextSize = textSize / 3;
-        bodyTextSize = (int) (textSize / 1.5);
-        headerTextSize = textSize * 2;
-        textPaddingSize = (int) (textSize / 3);
-        iconPaddingSize = (int) (textSize / 5);
+
+        float cellSize1 = Math.min(width / (4 + 1), height / (4 + 3));
+        paint.setTextSize(cellSize1);
+        float textSize1 = cellSize1 * cellSize1 / Math.max(cellSize1, paint.measureText("0000"));
+        titleTextSize = textSize1 / 3;
+        bodyTextSize = (int) (textSize1 / 1.5);
+        headerTextSize = textSize1 * 2;
+        textPaddingSize = (int) (textSize1 / 3);
+        iconPaddingSize = (int) (textSize1 / 5);
+      /*  titleTextSize = textSize ;
+        bodyTextSize = (int) (textSize );
+        headerTextSize = textSize ;
+        textPaddingSize = (int) (textSize );
+        iconPaddingSize = (int) (textSize );*/
 
         paint.setTextSize(titleTextSize);
 
         int textShiftYAll = centerText();
         //static variables
-        sYAll = (int) (startingY - cellSize * 1.5);
+        sYAll = (int) (startingY - cellSize1 * 1.5);
         titleStartYAll = (int) (sYAll + textPaddingSize + titleTextSize / 2 - textShiftYAll);
         bodyStartYAll = (int) (titleStartYAll + textPaddingSize + titleTextSize / 2 + bodyTextSize / 2);
 
@@ -561,6 +618,8 @@ public class MainView extends View {
         sYIcons = (startingY + eYAll) / 2 - iconSize / 2;
         sXNewGame = (endingX - iconSize);
         sXUndo = sXNewGame - iconSize * 3 / 2 - iconPaddingSize;
+        sXHome = sXUndo - iconSize * 3 / 2 - iconPaddingSize;
+        sXMusic = sXHome - iconSize * 3 / 2 - iconPaddingSize;
         resyncTime();
     }
 

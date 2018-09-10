@@ -130,11 +130,27 @@ class InputListener implements View.OnTouchListener {
                         }
                     } else if (iconPressed(mView.sXUndo, mView.sYIcons)) {
                         mView.game.revertUndoState();
-                        try {
+                        /*try {
                             throw new RuntimeException("Original Exception");
                         } catch (RuntimeException e) {
                             throw new RuntimeException("Check out buddybuild Crash Reporting!");
-                        }
+                        }*/
+                    }
+                    else if (iconPressed(mView.sXMusic, mView.sYIcons)) {
+                        mView.game.revertUndoState();
+                        /*try {
+                            throw new RuntimeException("Original Exception");
+                        } catch (RuntimeException e) {
+                            throw new RuntimeException("Check out buddybuild Crash Reporting!");
+                        }*/
+                    }
+                    else if (iconPressed(mView.sXHome, mView.sYIcons)) {
+                        mView.game.revertUndoState();
+                        /*try {
+                            throw new RuntimeException("Original Exception");
+                        } catch (RuntimeException e) {
+                            throw new RuntimeException("Check out buddybuild Crash Reporting!");
+                        }*/
                     } else if (isTap(2) && inRange(mView.startingX, x, mView.endingX)
                             && inRange(mView.startingY, x, mView.endingY) && mView.continueButtonEnabled) {
                         mView.game.setEndlessMode();

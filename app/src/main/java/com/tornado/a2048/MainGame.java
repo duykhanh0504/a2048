@@ -19,7 +19,7 @@ public class MainGame {
     private static final long SPAWN_ANIMATION_TIME = MainView.BASE_ANIMATION_TIME;
     private static final long NOTIFICATION_DELAY_TIME = MOVE_ANIMATION_TIME + SPAWN_ANIMATION_TIME;
     private static final long NOTIFICATION_ANIMATION_TIME = MainView.BASE_ANIMATION_TIME * 5;
-    private static final int startingMaxValue = 2048;
+    private static final int startingMaxValue = 8;
     //Odd state = game is not active
     //Even state = game is active
     //Win state = active state + 1
